@@ -1,7 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { Control, FieldPath, FieldValues } from "react-hook-form"
+import {
+  Control,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form"
 import {
   FormControl,
   FormField,
@@ -31,29 +36,39 @@ import { FormFieldType } from "@/constants"
 
 registerLocale("fr", fr)
 
-interface CustomProps<T extends FieldValues> {
+interface CustomProps<
+  T extends FieldValues,
+  TName extends FieldPath<T> = FieldPath<T>
+> {
   control: Control<T>
   fieldType: FormFieldType
-  name: FieldPath<T>
+  name: TName
   label?: string
   placeholder?: string
   iconSrc?: string
   iconAlt?: string
+  inputType?: React.HTMLInputTypeAttribute
   disabled?: boolean
   dateFormat?: string
   showTimeSelect?: boolean
   children?: React.ReactNode
-  renderSkeleton?: (field: any) => React.ReactNode
+  renderSkeleton?: (
+    field: ControllerRenderProps<T, TName>
+  ) => React.ReactNode
 }
 
-const renderField = (
-  field: any,
-  props: CustomProps<FieldValues>
+const renderField = <
+  T extends FieldValues,
+  TName extends FieldPath<T>
+>(
+  field: ControllerRenderProps<T, TName>,
+  props: CustomProps<T, TName>
 ): React.ReactNode => {
   const {
     fieldType,
     iconSrc,
     iconAlt,
+    inputType,
     placeholder,
     showTimeSelect,
     dateFormat,
@@ -76,7 +91,19 @@ const renderField = (
           <FormControl>
             <Input
               placeholder={placeholder}
+              type={inputType}
               {...field}
+              value={field.value ?? ""}
+              onChange={
+                inputType === "number"
+                  ? (event) =>
+                      field.onChange(
+                        event.target.value === ""
+                          ? undefined
+                          : event.target.valueAsNumber
+                      )
+                  : field.onChange
+              }
               className="shad-input border-0"
             />
           </FormControl>
@@ -173,7 +200,12 @@ const renderField = (
   }
 }
 
-const CustomFormField = <T extends FieldValues>(props: CustomProps<T>) => {
+const CustomFormField = <
+  T extends FieldValues,
+  TName extends FieldPath<T>
+>(
+  props: CustomProps<T, TName>
+) => {
   const { control, fieldType, name, label } = props
 
   return (
@@ -185,7 +217,7 @@ const CustomFormField = <T extends FieldValues>(props: CustomProps<T>) => {
           {fieldType !== FormFieldType.CHECKBOX && label && (
             <FormLabel>{label}</FormLabel>
           )}
-          {renderField(field, props as CustomProps<FieldValues>)}
+          {renderField(field, props)}
           <FormMessage className="shad-error" />
         </FormItem>
       )}

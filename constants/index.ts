@@ -94,3 +94,89 @@ export const StatusIcon = {
   pending: "/assets/icons/pending.svg",
   cancelled: "/assets/icons/cancelled.svg",
 };
+
+// ─── ✅ NOUVEAU — Types de notes de soins ────────────────────
+export const CareNoteTypes = [
+  { value: "observation", label: "Observation",    color: "bg-blue-600" },
+  { value: "soin",        label: "Soin effectué",  color: "bg-green-600" },
+  { value: "medicament",  label: "Médicament",     color: "bg-dark-500" },
+  { value: "urgence",     label: "Urgence",        color: "bg-red-600" },
+  { value: "suivi",       label: "Suivi",          color: "bg-dark-500" },
+];
+
+export const NurseRoles = [
+  "infirmier",
+  "infirmiere",
+  "aide-soignant",
+  "aide-soignante",
+  "infirmier-chef",
+] as const;
+
+export const NurseDepartments = [
+  "Urgences",
+  "Pédiatrie",
+  "Cardiologie",
+  "Chirurgie",
+  "Maternité",
+  "Médecine Générale",
+  "Réanimation",
+  "Oncologie",
+  "Neurologie",
+  "Orthopédie",
+] as const;
+ 
+// ─── ✅ NOUVEAU — Valeurs par défaut formulaire infirmier ─────
+export const NurseFormDefaultValues = {
+  name: "",
+  email: "",
+  phone: "",
+  role: "infirmier" as NurseRole,
+  department: "Médecine Générale",
+  registrationNumber: "",
+  passkey: "",
+};
+ 
+// ─── ✅ NOUVEAU — Valeurs par défaut constantes vitales ───────
+export const VitalSignsDefaultValues = {
+  bloodPressure: "",
+  heartRate: 0,
+  temperature: 0,
+  oxygenSaturation: 0,
+  weight: undefined,
+  height: undefined,
+  respiratoryRate: undefined,
+  bloodGlucose: undefined,
+  notes: "",
+};
+ 
+// ─── ✅ NOUVEAU — Seuils d'alerte constantes vitales ─────────
+export const VitalSignsAlerts = {
+  heartRate: {
+    min: 60,
+    max: 100,
+    label: "Fréquence cardiaque normale : 60-100 bpm",
+  },
+  temperature: {
+    min: 36.1,
+    max: 37.9,
+    label: "Température normale : 36.1-37.9°C",
+  },
+  oxygenSaturation: {
+    min: 95,
+    max: 100,
+    label: "SpO2 normale : 95-100%",
+  },
+  respiratoryRate: {
+    min: 12,
+    max: 20,
+    label: "Fréquence respiratoire normale : 12-20/min",
+  },
+};
+ 
+// ─── ✅ NOUVEAU — Icônes de statut pour l'espace infirmier ───
+export const NurseStatusIcon = {
+  scheduled: "/assets/icons/check.svg",
+  pending:   "/assets/icons/pending.svg",
+  cancelled: "/assets/icons/cancelled.svg",
+  inProgress: "/assets/icons/pending.svg",
+};
